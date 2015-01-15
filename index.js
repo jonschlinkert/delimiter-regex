@@ -2,7 +2,7 @@
 
 var chars = require('regexp-special-chars');
 
-module.exports = function(open, close, options) {
+module.exports = function delimiters(open, close, options) {
   if (typeof close !== 'string') {
     options = close;
     close = null;
@@ -15,20 +15,20 @@ module.exports = function(open, close, options) {
   }
 
   if (Array.isArray(open)) {
-    var syntax = open;
+    var syntax = open.slice();
     open = syntax[0];
     close = syntax[1];
   }
 
-  var opts = options || {};
-  close = close || '}';
+  options = options || {};
+  var body = '\\s*([\\s\\S]*?)\\s*';
 
-  var body = '([^' + close + ']*)';
-  open = open ? esc(open) : '\\$\\{';
-  close = close ? esc(close) : '\\}';
+  open = esc(open ? open : '${');
+  close = esc(close ? close : '}');
 
-  return new RegExp(open + body + close, opts.flags || '');
+  return new RegExp(open + body + close, options.flags || '');
 };
+
 
 function esc(str) {
   return str.replace(chars, '\\$&');
