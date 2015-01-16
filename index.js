@@ -1,6 +1,6 @@
 'use strict';
 
-var chars = require('regexp-special-chars');
+var extend = require('extend-shallow');
 
 module.exports = function delimiters(open, close, options) {
   if (typeof close !== 'string') {
@@ -20,16 +20,11 @@ module.exports = function delimiters(open, close, options) {
     close = syntax[1];
   }
 
-  options = options || {};
+  var opts = extend({flags: ''}, options);
   var body = '\\s*([\\s\\S]*?)\\s*';
 
-  open = esc(open ? open : '${');
-  close = esc(close ? close : '}');
+  open = open ? open : '\\${';
+  close = close ? close : '}';
 
-  return new RegExp(open + body + close, options.flags || '');
+  return new RegExp(open + body + close, opts.flags);
 };
-
-
-function esc(str) {
-  return str.replace(chars, '\\$&');
-}
