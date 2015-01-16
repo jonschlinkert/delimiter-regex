@@ -31,7 +31,7 @@ delims();
 //=> /\$\{\s*([\s\S]*?)\s*\}/
 ```
 
-### Params
+## Params
 
 - **delimiters** `{String|Array}`: supports array format (`delims(['{{', '}}'])`) or list (`delims('{{', '}}')`)
 - **options**: currently RegExp `flags` is the only option
