@@ -16,8 +16,8 @@ function match(str, re) {
 
 describe('delims', function () {
   it('should return default es6 regex:', function () {
-    assert.deepEqual(/\${\s*([\s\S]*?)\s*}/, delims());
-    assert.deepEqual(/\${\s*([\s\S]*?)\s*}/, delims('\\${', '}'));
+    assert.deepEqual(/\${([\s\S]+?)}/, delims());
+    assert.deepEqual(/\${([\s\S]+?)}/, delims('\\${', '}'));
   });
 
   it('should match correctly:', function () {
@@ -26,28 +26,28 @@ describe('delims', function () {
     assert.equal(match('abc/${foo}/${bar}/xyz', delims())[0], '${foo}');
     assert.equal(match('abc/${foo}/${bar}/xyz', delims())[1], 'foo');
     assert.equal(match('---\na: b\nc: d\n---\ncontent', delims('---', '---'))[0], '---\na: b\nc: d\n---');
-    assert.equal(match('---\na: b\nc: d\n---\ncontent', delims('---', '---'))[1], 'a: b\nc: d');
+    assert.equal(match('---\na: b\nc: d\n---\ncontent', delims('---\\s*', '\\s*---'))[1], 'a: b\nc: d');
     assert.equal(match('abc/${foo}/${bar}/xyz', delims())[1], 'foo');
   });
 
   it('should support regexp flags:', function () {
-    assert.deepEqual(/---\s*([\s\S]*?)\s*---/g, delims('---', '---', {flags: 'g'}));
-    assert.deepEqual(/\${\s*([\s\S]*?)\s*}/gm, delims({flags: 'gm'}));
+    assert.deepEqual(/---([\s\S]+?)---/g, delims('---', '---', {flags: 'g'}));
+    assert.deepEqual(/\${([\s\S]+?)}/gm, delims({flags: 'gm'}));
   });
 
   it('should not escape characters:', function () {
-    assert.deepEqual(/---(\w)*\s*([\s\S]*?)\s*---/, delims('---(\\w)*', '---'));
+    assert.deepEqual(/---(\w)*([\s\S]+?)---/, delims('---(\\w)*', '---'));
   });
 
   it('should support list format:', function () {
-    assert.deepEqual(/---\s*([\s\S]*?)\s*---/, delims('---', '---'));
-    assert.deepEqual(/\{\{\s*([\s\S]*?)\s*\}\}/, delims('\\{\\{', '\\}\\}'));
-    assert.deepEqual(/\{{\s*([\s\S]*?)\s*}}/, delims('\\{{', '}}'));
+    assert.deepEqual(/---([\s\S]+?)---/, delims('---', '---'));
+    assert.deepEqual(/\{\{([\s\S]+?)\}\}/, delims('\\{\\{', '\\}\\}'));
+    assert.deepEqual(/\{{([\s\S]+?)}}/, delims('\\{{', '}}'));
   });
 
   it('should support array format:', function () {
-    assert.deepEqual(/---\s*([\s\S]*?)\s*---/, delims(['---', '---']));
-    assert.deepEqual(/\{\{\s*([\s\S]*?)\s*\}\}/, delims(['\\{\\{', '\\}\\}']));
-    assert.deepEqual(/\{{\s*([\s\S]*?)\s*}}/, delims(['\\{{', '}}']));
+    assert.deepEqual(/---([\s\S]+?)---/, delims(['---', '---']));
+    assert.deepEqual(/\{\{([\s\S]+?)\}\}/, delims(['\\{\\{', '\\}\\}']));
+    assert.deepEqual(/\{{([\s\S]+?)}}/, delims(['\\{{', '}}']));
   });
 });
