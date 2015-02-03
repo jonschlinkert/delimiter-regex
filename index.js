@@ -21,7 +21,7 @@ module.exports = function delimiters(open, close, options) {
   }
 
   var opts = extend({flags: ''}, options);
-  var body = '\\s*([\\s\\S]*?)\\s*';
+  var body = '([\\s\\S]+?)';
 
   open = open ? open : '\\${';
   close = close ? close : '}';
