@@ -3,6 +3,10 @@
 var extend = require('extend-shallow');
 
 module.exports = function delimiters(open, close, options) {
+  if (open instanceof RegExp) {
+    return open;
+  }
+
   if (typeof close !== 'string') {
     options = close;
     close = null;
