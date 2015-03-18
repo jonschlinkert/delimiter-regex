@@ -2,7 +2,7 @@
  * delimiter-regex <https://github.com/jonschlinkert/delimiter-regex>
  *
  * Copyright (c) 2014-2015, Jon Schlinkert.
- * Licensed under the MIT License
+ * Licensed under the MIT License.
  */
 
 'use strict';
