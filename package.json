@@ -22,9 +22,11 @@
     "test": "mocha"
   },
   "dependencies": {
-    "extend-shallow": "^1.1.2"
+    "extend-shallow": "^1.1.2",
+    "isobject": "^2.1.0"
   },
   "devDependencies": {
+    "gulp-format-md": "^0.1.9",
     "mocha": "*"
   },
   "keywords": [
@@ -39,5 +41,25 @@
     "regular",
     "syntax",
     "template"
-  ]
+  ],
+  "verb": {
+    "toc": false,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
+    "lint": {
+      "reflinks": true
+    },
+    "related": {
+      "list": []
+    },
+    "reflinks": [
+      "verb",
+      "verb-generate-readme"
+    ]
+  }
 }

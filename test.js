@@ -16,8 +16,8 @@ function match(str, re) {
 
 describe('delims', function () {
   it('should return default es6 regex:', function () {
-    assert.deepEqual(/\${([\s\S]+?)}/, delims());
-    assert.deepEqual(/\${([\s\S]+?)}/, delims('\\${', '}'));
+    assert.deepEqual(/\$\{([^\\}]*(?:\\.[^\\}]*)*)\}/g, delims());
+    assert.deepEqual(/\$\{([\s\S]+?)\}/, delims('\\$\\{', '\\}'));
   });
 
   it('should match correctly:', function () {
@@ -30,9 +30,15 @@ describe('delims', function () {
     assert.equal(match('abc/${foo}/${bar}/xyz', delims())[1], 'foo');
   });
 
+  it('should support array format:', function () {
+    assert.deepEqual(/---([\s\S]+?)---/, delims(['---', '---']));
+    assert.deepEqual(/\{\{([\s\S]+?)\}\}/, delims(['\\{\\{', '\\}\\}']));
+    assert.deepEqual(/\{{([\s\S]+?)}}/, delims(['\\{{', '}}']));
+  });
+
   it('should support regexp flags:', function () {
     assert.deepEqual(/---([\s\S]+?)---/g, delims('---', '---', {flags: 'g'}));
-    assert.deepEqual(/\${([\s\S]+?)}/gm, delims({flags: 'gm'}));
+    assert.deepEqual(/\$\{([\s\S]+?)\}/gm, delims({flags: 'gm'}));
   });
 
   it('should not escape characters:', function () {
@@ -42,12 +48,11 @@ describe('delims', function () {
   it('should support list format:', function () {
     assert.deepEqual(/---([\s\S]+?)---/, delims('---', '---'));
     assert.deepEqual(/\{\{([\s\S]+?)\}\}/, delims('\\{\\{', '\\}\\}'));
-    assert.deepEqual(/\{{([\s\S]+?)}}/, delims('\\{{', '}}'));
   });
 
-  it('should support array format:', function () {
-    assert.deepEqual(/---([\s\S]+?)---/, delims(['---', '---']));
-    assert.deepEqual(/\{\{([\s\S]+?)\}\}/, delims(['\\{\\{', '\\}\\}']));
-    assert.deepEqual(/\{{([\s\S]+?)}}/, delims(['\\{{', '}}']));
+  it('should respect escapes', function () {
+    assert.deepEqual(/\-\-\-([\s\S]+?)\-\-\-/, delims('\\-\\-\\-', '\\-\\-\\-'));
+    assert.deepEqual(/\{\{([\s\S]+?)}}/, delims('\\{\\{', '}}'));
+    assert.deepEqual(/\{{([\s\S]+?)}}/, delims('\\{{', '}}'));
   });
 });
